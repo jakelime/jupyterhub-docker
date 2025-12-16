@@ -1,0 +1,5 @@
+dockerspawner
+jupyterhub==5.4.3
+jupyterhub-nativeauthenticator
+jupyterlab
+notebook

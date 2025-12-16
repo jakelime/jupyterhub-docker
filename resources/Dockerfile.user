@@ -1,0 +1,13 @@
+ARG url_pypi=https://pypi.org/simple/
+FROM quay.io/jupyter/minimal-notebook:python-3.13.11
+ARG JUPYTERHUB_VERSION=5.4.3
+RUN pip3 install --no-cache \
+    jupyterhub==$JUPYTERHUB_VERSION
+
+ARG url_pypi
+ENV url_pypi=${url_pypi}
+
+WORKDIR /etc/jupyter-setup
+
+COPY requirements.user.txt .
+RUN pip install -r requirements.user.txt --index-url ${url_pypi}

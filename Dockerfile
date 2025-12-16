@@ -1,9 +1,10 @@
 ARG url_docker=docker.io
 ARG url_pypi=https://pypi.org/simple/
-FROM ${url_docker}/python:3.12.11-bookworm
+FROM ${url_docker}/jupyterhub/jupyterhub:5.4.3
 
 ARG url_pypi
 ENV url_pypi=${url_pypi}
 
-RUN python3 -m pip install --upgrade jupyterlab --index-url ${url_pypi}
-RUN python3 -m pip install --upgrade notebook --index-url ${url_pypi}
+COPY jupyterhub_config.py /etc/jupyterhub/jupyterhub_config.py
+COPY requirements.txt /etc/jupyterhub/requirements.txt
+RUN pip install -r /etc/jupyterhub/requirements.txt --index-url ${url_pypi}

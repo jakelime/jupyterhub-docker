@@ -1,0 +1,7 @@
+jupyterlab
+pandas
+plotly
+matplotlib
+seaborn
+scipy
+numpy
