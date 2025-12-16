@@ -56,7 +56,8 @@ c.DockerSpawner.volumes = {"jupyterhub-user-{username}": notebook_dir}
 
 # --- Data Persistence ---
 # Persist the Hub database
-c.JupyterHub.db_url = "sqlite:////srv/jupyterhub/jupyterhub.sqlite"
+# c.JupyterHub.db_url = "sqlite:////srv/jupyterhub/jupyterhub.sqlite"
+c.JupyterHub.db_url = "sqlite:////jupyterhub_data/jupyterhub.sqlite"
 
 
 # --- Resource management configurations ---
