@@ -19,7 +19,9 @@ c.JupyterHub.authenticator_class = "native"
 c.JupyterHub.template_paths = [
     f"{os.path.dirname(nativeauthenticator.__file__)}/templates/"
 ]
-c.Authenticator.admin_users = {"jfroot", "jakelim"}
+c.Authenticator.admin_users = {
+    "jfroot",
+}
 c.Authenticator.allow_all = True
 
 # --- Spawner (Docker) ---
