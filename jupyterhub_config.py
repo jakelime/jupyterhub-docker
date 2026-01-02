@@ -1,7 +1,7 @@
 # Configuration file for jupyterhub.
 
 import os
-
+from pathlib import Path
 import nativeauthenticator
 
 try:
@@ -57,7 +57,9 @@ c.DockerSpawner.volumes = {"jupyterhub-user-{username}": notebook_dir}
 # --- Data Persistence ---
 # Persist the Hub database
 # c.JupyterHub.db_url = "sqlite:////srv/jupyterhub/jupyterhub.sqlite"
-c.JupyterHub.db_url = "sqlite:////jupyterhub_data/jupyterhub.sqlite"
+datashare_dir = Path(os.getenv("DATASHARE_DIR", "/datashare")) / "jupyterhub"
+datashare_dir.mkdir(parents=True, exist_ok=True)
+c.JupyterHub.db_url = "sqlite:////datashare/jupyterhub/jupyterhub.sqlite"
 
 
 # --- Resource management configurations ---
