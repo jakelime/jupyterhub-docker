@@ -21,9 +21,9 @@ def sanitize_username(username: str) -> str:
     return results.lower()
 
 
-_admin_users = os.getenv("DOCKER_ADMIN_USERS", "jujuadmin,jujuroot").split(",")
+_admin_users = os.getenv("ADMIN_USERS", "jujuadmin,jujuroot")
 ADMIN_USERS = set(
-    sanitize_username(user) for user in _admin_users if sanitize_username(user)
+    sanitize_username(user) for user in _admin_users.split(",") if sanitize_username(user)
 )
 
 c = get_config()
