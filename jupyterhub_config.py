@@ -1,7 +1,9 @@
 # Configuration file for jupyterhub.
 
 import os
+import re
 from pathlib import Path
+
 import nativeauthenticator
 
 try:
@@ -10,6 +12,19 @@ except Exception as e:
     print(f"{e=}")
     JUPYTERHUB_PORT = 8001
 
+DOCKER_NETWORK_NAME = os.getenv("DOCKER_NETWORK_NAME", "jetforge-docker_jf_net")
+
+
+def sanitize_username(username: str) -> str:
+    """Keep only '.', '_', and alphanumeric characters (removes spaces, etc)."""
+    results = re.sub(r"[^a-zA-Z0-9._]", "", username)
+    return results.lower()
+
+
+_admin_users = os.getenv("DOCKER_ADMIN_USERS", "jujuadmin,jujuroot").split(",")
+ADMIN_USERS = set(
+    sanitize_username(user) for user in _admin_users if sanitize_username(user)
+)
 
 c = get_config()
 
@@ -26,16 +41,14 @@ c.JupyterHub.authenticator_class = "native"
 c.JupyterHub.template_paths = [
     f"{os.path.dirname(nativeauthenticator.__file__)}/templates/"
 ]
-c.Authenticator.admin_users = {
-    "jfroot",
-}
+c.Authenticator.admin_users = ADMIN_USERS
 c.Authenticator.allow_all = True
 
 # --- Spawner (Docker) ---
 c.JupyterHub.spawner_class = "dockerspawner.DockerSpawner"
 
 # The Docker Network.
-c.DockerSpawner.network_name = "jetforge-docker_jf_net"
+c.DockerSpawner.network_name = DOCKER_NETWORK_NAME
 
 # How spawned containers reach the Hub
 c.DockerSpawner.hub_connect_url = f"http://jupyterhub:{JUPYTERHUB_PORT}"
